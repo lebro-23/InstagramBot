@@ -62,6 +62,26 @@ def check_blocked(**kwargs):
 
     return(blocked)
 
+
+def check_popup(**kwargs):
+    # Input argument - driver
+    driver = kwargs.get('driver')
+
+    wait = WebDriverWait(driver, 10)
+
+    # Check if popup, click ok to continue if so
+    try:
+        browser_notification = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "cmbtv")))
+        browser_notification_button = browser_notification.find_element_by_class_name("sqdOP")
+        popup = True
+
+        if (browser_notification_button.text == 'Not Now'):
+            browser_notification_button.click()
+    except Exception as e:
+        popup = False
+
+    return (popup)
+
 def follow_user(**kwargs):
     # Input arguments - instagram username + driver
     username = kwargs.get('username')

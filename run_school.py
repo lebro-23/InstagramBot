@@ -21,8 +21,9 @@ max_likes = sys.argv[6]
 n = len(filenames)
 filenames_list = filenames[1:n-1]
 filenames_list = filenames_list.split(',')
-
 full_input_list = []
+num_likes = 0
+num_follows = 0
 
 #Get full list of users
 for f in filenames_list:
@@ -67,6 +68,7 @@ count = 0
 for user in user_list:
 
     count = count + 1
+    popup = check_popup(driver=driver)
 
     if (count % 3) == 1:
 
@@ -89,7 +91,9 @@ for user in user_list:
                     print("Successfully followed private account %s" % user)
                 else:
                     print("Successfully followed public account %s" % user)
-            time.sleep(random.randint(30,60))
+                num_follows = num_follows + 1
+
+            time.sleep(random.randint(10,30))
 
         except Exception as e:
             error_followed_list.append(user)
@@ -112,6 +116,7 @@ for user in user_list:
                 print("Already liked post by %s" % user)
             else:
                 print("Successfully liked post by %s" % user)
+                num_likes = num_likes + 1
 
         except Exception as e:
             error_liked_list.append(user)
@@ -138,7 +143,8 @@ for user in user_list:
                     print("Successfully followed private account %s" % user)
                 else:
                     print("Successfully followed public account %s" % user)
-            time.sleep(random.randint(30,60))
+                num_follows = num_follows + 1
+            time.sleep(random.randint(10,30))
 
         except Exception as e:
             error_followed_list.append(user)
@@ -158,7 +164,7 @@ for user in user_list:
     upload_df_to_bucket(credentials_path='../InstagramBot-9cb1dfece602.json', bucket_path='insta-schools-bucket',
                         filepath=incomplete_outpath, df=pd.Series(list(incomplete_list)))
 
-    if (len(followed_list) > int(max_follows) or len(liked_list) > int(max_likes)):
+    if (num_follows > int(max_follows) or num_likes > int(max_likes)):
         break
 
 complete_list = followed_list + liked_list
