@@ -41,6 +41,11 @@ def login(**kwargs):
     login_button = driver.find_element_by_css_selector(".DhRcB")
     login_button.click()
     time.sleep(3)
+
+    #Check and remove popup if there
+    popup = check_popup()
+
+    #Remove notifications popup
     notification_buttons = driver.find_elements_by_tag_name("button")
     notification_button_off = notification_buttons[len(notification_buttons) - 1]
     notification_button_off.click()
